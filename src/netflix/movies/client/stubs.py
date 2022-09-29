@@ -80,10 +80,14 @@ class MovieClientStub(MovieClient):
     async def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
         return FILM
 
-    async def search_films(self, query: str, /, *, options: QueryOptions | None = None) -> list[FilmList]:
+    async def search_films(
+        self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
+    ) -> list[FilmList]:
         return FILM_SEARCH_RESULTS
 
-    async def search_persons(self, query: str, /, *, options: QueryOptions | None = None) -> list[PersonList]:
+    async def search_persons(
+        self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
+    ) -> list[PersonList]:
         return PERSON_SEARCH_RESULTS
 
     async def get_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
