@@ -1,0 +1,5 @@
+-c requirements.txt
+
+pre-commit==2.20.0
+tox==3.26.0
+build==0.8.0

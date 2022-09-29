@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.tox]
+legacy_tox_ini = '''
+[tox]
+envlist =
+    py310
+isolated_build = true
+
+[testenv]
+deps = -rrequirements.test.txt
+commands = pytest {posargs}
+'''
