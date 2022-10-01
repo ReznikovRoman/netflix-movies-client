@@ -2,7 +2,7 @@ from .version import __version__
 
 # XXX: Для сборки пакета setuptools'ами
 try:
-    from .asynchronous import AsyncMovieClient, AsyncMovieSession, init_async_movie_client
+    from .asyncio import AsyncMovieClient, AsyncMovieSession, init_async_movie_client
     from .clients import MovieClient, init_movie_client
     from .http import MovieSession
 except ImportError:
