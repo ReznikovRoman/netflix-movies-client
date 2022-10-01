@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from .common import BaseIdOrjsonSchema
+from netflix.movies.client.types.common import BaseIdOrjsonSchema
 
 
 class PersonShortDetail(BaseIdOrjsonSchema):

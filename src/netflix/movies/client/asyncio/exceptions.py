@@ -6,7 +6,7 @@ from typing import ClassVar, Iterable, Type
 
 import aiohttp
 
-from ..exceptions import NetflixMoviesBaseError
+from netflix.movies.client.exceptions import NetflixMoviesBaseError
 
 log = logging.getLogger(__name__)
 

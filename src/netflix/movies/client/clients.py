@@ -4,9 +4,11 @@ from typing import ClassVar, Iterator
 
 from pydantic import parse_obj_as
 
-from .http import MovieSession
-from .types import FilmDetail, FilmList, PersonFullDetail, PersonList, PersonShortDetail, QueryOptions
-from .warnings import InvalidPageSizeWarning
+from netflix.movies.client.http import MovieSession
+from netflix.movies.client.types import (
+    FilmDetail, FilmList, PersonFullDetail, PersonList, PersonShortDetail, QueryOptions,
+)
+from netflix.movies.client.warnings import InvalidPageSizeWarning
 
 
 class MovieClient:

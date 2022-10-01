@@ -1,9 +1,9 @@
 import datetime
 from enum import Enum
 
-from .common import BaseIdOrjsonSchema
-from .genres import GenreDetail
-from .persons import PersonList
+from netflix.movies.client.types.common import BaseIdOrjsonSchema
+from netflix.movies.client.types.genres import GenreDetail
+from netflix.movies.client.types.persons import PersonList
 
 
 class FilmAgeRating(str, Enum):

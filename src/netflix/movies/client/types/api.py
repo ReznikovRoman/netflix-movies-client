@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from ..constants import DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE
+from netflix.movies.client.constants import DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE
 
 dataclass_options = {
     "init": True,

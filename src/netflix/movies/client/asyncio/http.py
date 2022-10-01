@@ -7,12 +7,12 @@ from typing import TYPE_CHECKING, Awaitable, Callable, Iterable, Mapping
 import aiohttp
 from aiohttp import ContentTypeError
 
-from ..http import _exc_msg
-from ..version import __version__
-from . import exceptions
+from netflix.movies.client.asyncio import exceptions
+from netflix.movies.client.http import _exc_msg
+from netflix.movies.client.version import __version__
 
 if TYPE_CHECKING:
-    from ..types import TimeoutScalarType
+    from netflix.movies.client.types import TimeoutScalarType
 
 
 class AsyncMovieSession(aiohttp.ClientSession):

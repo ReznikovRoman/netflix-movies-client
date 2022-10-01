@@ -1,7 +1,7 @@
 from enum import Enum
 
-from .common import BaseIdOrjsonSchema, BaseOrjsonSchema
-from .films import FilmList
+from netflix.movies.client.types.common import BaseIdOrjsonSchema, BaseOrjsonSchema
+from netflix.movies.client.types.films import FilmList
 
 
 class Role(str, Enum):

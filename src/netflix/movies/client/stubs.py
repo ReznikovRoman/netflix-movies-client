@@ -1,10 +1,12 @@
 import datetime
 import uuid
 
-from .clients import MovieClient
-from .types import FilmDetail, FilmList, PersonFullDetail, PersonList, PersonShortDetail, QueryOptions
-from .types.films import FilmAccessType, FilmAgeRating
-from .types.roles import PersonRoleFilmList, Role
+from netflix.movies.client.clients import MovieClient
+from netflix.movies.client.types import (
+    FilmDetail, FilmList, PersonFullDetail, PersonList, PersonShortDetail, QueryOptions,
+)
+from netflix.movies.client.types.films import FilmAccessType, FilmAgeRating
+from netflix.movies.client.types.roles import PersonRoleFilmList, Role
 
 PERSON_ID = uuid.UUID("fb6a644b-436a-4131-8fbc-00ca73e9aee7")
 PERSON_NAME = "Леонид Гайдай"

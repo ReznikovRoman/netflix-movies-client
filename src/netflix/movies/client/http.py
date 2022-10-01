@@ -5,11 +5,11 @@ from typing import TYPE_CHECKING, Callable, Iterable, Mapping
 
 import requests
 
-from . import exceptions
-from .version import __version__
+from netflix.movies.client import exceptions
+from netflix.movies.client.version import __version__
 
 if TYPE_CHECKING:
-    from .types import TimeoutTupleType, TimeoutType
+    from netflix.movies.client.types import TimeoutTupleType, TimeoutType
 
 
 def _exc_msg(exc: Exception) -> str:
