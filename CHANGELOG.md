@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 - 2022-10-02
+
+### Features
+- Update required packages - do not pin to exact versions
+
 ## 0.3.0 - 2022-10-02
 
 ### Breaking Changes
