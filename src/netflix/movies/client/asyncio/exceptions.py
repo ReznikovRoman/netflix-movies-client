@@ -11,14 +11,14 @@ from netflix.movies.client.exceptions import NetflixMoviesBaseError
 log = logging.getLogger(__name__)
 
 
-class AsyncNetflixMoviesError(NetflixMoviesBaseError):
+class NetflixMoviesError(NetflixMoviesBaseError):
     """Netflix Movies error."""
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self}>"
 
 
-class AsyncMaxAttemptsError(AsyncNetflixMoviesError):
+class MaxAttemptsError(NetflixMoviesError):
     """Max attempts limit exceeded."""
 
     errors: tuple[Exception]
@@ -36,7 +36,7 @@ class AsyncMaxAttemptsError(AsyncNetflixMoviesError):
         return self.errors[-1]
 
 
-class _AsyncHTTPError(AsyncNetflixMoviesError):
+class _HTTPError(NetflixMoviesError):
 
     _code: str
     _message: str
@@ -77,29 +77,29 @@ class _AsyncHTTPError(AsyncNetflixMoviesError):
         return f"{self.status_code}: {self.message}"
 
 
-class AsyncHTTPError(_AsyncHTTPError):
+class HTTPError(_HTTPError):
     """Netflix Movies HTTP error."""
 
-    _error_code_subclass_map: ClassVar[dict[str: Type["AsyncHTTPError"]]] = {}
+    _error_code_subclass_map: ClassVar[dict[str: Type["HTTPError"]]] = {}
 
     def __new__(
         cls, response: aiohttp.ClientResponse, error_code: HTTPStatus, error_dict: dict | None = None,
-    ) -> AsyncHTTPError:
-        if cls is not AsyncHTTPError:
+    ) -> HTTPError:
+        if cls is not HTTPError:
             # The HTTPError subclass is explicitly used -> do not use custom dispatcher.
-            return _AsyncHTTPError.__new__(cls, response, error_code, error_dict)
+            return _HTTPError.__new__(cls, response, error_code, error_dict)
         status_code = response.status
         actual_class = cls._error_code_subclass_map.get(cls._get_error_code_from_response(error_dict))
         if not actual_class:
             if 400 <= status_code <= 499:
-                actual_class = AsyncClientError
+                actual_class = ClientError
             elif 500 <= status_code <= 599:
-                actual_class = AsyncServerError
+                actual_class = ServerError
             else:
-                actual_class = AsyncHTTPError
+                actual_class = HTTPError
         if "__new__" in actual_class.__dict__:
             return actual_class(response, error_code, error_dict)
-        return _AsyncHTTPError.__new__(actual_class, response, error_code, error_dict)
+        return _HTTPError.__new__(actual_class, response, error_code, error_dict)
 
     def __init__(
         self, response: aiohttp.ClientResponse, error_code: HTTPStatus, error_dict: dict | None = None,
@@ -127,21 +127,21 @@ class AsyncHTTPError(_AsyncHTTPError):
         return response.get("error").get("code")
 
 
-class AsyncServerError(AsyncHTTPError):
+class ServerError(HTTPError):
     """Netflix Movies server error."""
 
 
-class AsyncClientError(AsyncHTTPError):
+class ClientError(HTTPError):
     """Netflix Movies client error."""
 
 
-class AsyncNotFoundError(AsyncClientError):
+class NotFoundError(ClientError):
     """Resource is not found."""
 
     code = "not_found"
 
 
-class AsyncAuthorizationError(AsyncClientError):
+class AuthorizationError(ClientError):
     """Authorization error."""
 
     code = "authorization_error"

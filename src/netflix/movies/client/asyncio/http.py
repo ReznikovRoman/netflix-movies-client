@@ -68,7 +68,7 @@ class AsyncMovieSession(aiohttp.ClientSession):
         response = await self._base_request(method, url, **kwargs)
         if response.ok:
             return response
-        raise exceptions.AsyncHTTPError(response, HTTPStatus(response.status), await self._get_error_dict(response))
+        raise exceptions.HTTPError(response, HTTPStatus(response.status), await self._get_error_dict(response))
 
     async def _retry(
         self,
@@ -83,12 +83,12 @@ class AsyncMovieSession(aiohttp.ClientSession):
         while error_attempt <= max_attempts:
             try:
                 return await func(*args, **kwargs)
-            except (OSError, exceptions.AsyncServerError) as exc:
+            except (OSError, exceptions.ServerError) as exc:
                 self.log.warning(f"attempt {error_attempt} failed: {_exception_message(exc)}")
                 _exc = exc
                 error_attempt += 1
                 errors.append(exc)
-        raise exceptions.AsyncMaxAttemptsError(errors, attempts=max_attempts) from _exc
+        raise exceptions.MaxAttemptsError(errors, attempts=max_attempts) from _exc
 
     async def _get_error_dict(self, response: aiohttp.ClientResponse) -> dict | None:
         try:
