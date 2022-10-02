@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2022-10-02
+
+### Breaking Changes
+- Rename client methods: `get_*` -> `fetch_*`; `search_*` -> `find_*`
+
+### Internal
+- Rename exceptions from `asyncio` package
+
 ## 0.2.1 - 2022-10-02
 
 ### Internal
