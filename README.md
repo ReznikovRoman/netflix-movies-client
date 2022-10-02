@@ -1,44 +1,44 @@
 # Netflix Movies Client
-Python клиент для работы с АПИ сервиса Netflix Movies.
+Netflix Movies python API client.
 
-## Сервисы
+## Services
 - Netflix Admin:
-  - Панель администратора для управления онлайн-кинотеатром (редактирование фильмов, жанров, актеров)
+  - Online-cinema management panel. Admins can manage films, genres, actors/directors/writers/...
   - https://github.com/ReznikovRoman/netflix-admin
 - Netflix ETL:
-  - ETL пайплайн для синхронизации данных между БД сервиса Netflix Admin и Elasticsearch
+  - ETL pipeline for synchronizing data between "Netflix Admin" database and Elasticsearch
   - https://github.com/ReznikovRoman/netflix-etl
 - Netflix Movies API:
-  - АПИ фильмов
+  - Movies API
   - https://github.com/ReznikovRoman/netflix-movies-api
-    - Python клиент: https://github.com/ReznikovRoman/netflix-movies-client
+    - Python client: https://github.com/ReznikovRoman/netflix-movies-client
 - Netflix Auth API:
-  - Сервис авторизации - управление пользователями и ролями
+  - Authorization service - users and roles management
   - https://github.com/ReznikovRoman/netflix-auth-api
 - Netflix UGC:
-  - Сервис для работы с пользовательским контентом
+  - Service for working with user generated content (comments, likes, film reviews, etc.)
   - https://github.com/ReznikovRoman/netflix-ugc
 - Netflix Notifications:
-  - Сервис для отправки уведомлений
+  - Notifications service (email, mobile, push)
   - https://github.com/ReznikovRoman/netflix-notifications
 - Netflix Voice Assistant:
-  - Голосовой ассистент Netflix
+  - Online-cinema voice assistant
   - https://github.com/ReznikovRoman/netflix-voice-assistant
 
-## Разработка
-Синхронизировать окружение с `requirements.txt` / `requirements.dev.txt` (установит отсутствующие пакеты, удалит лишние, обновит несоответствующие версии):
+## Development
+Sync environment with `requirements.txt` / `requirements.dev.txt` (will install/update missing packages, remove redundant ones):
 ```shell
 make sync-requirements
 ```
 
-Сгенерировать requirements.\*.txt files (нужно пере-генерировать после изменений в файлах requirements.\*.in):
+Compile requirements.\*.txt files (have to re-compile after changes in requirements.\*.in):
 ```shell
 make compile-requirements
 ```
 
-Используем `requirements.local.in` для пакетов, которые нужно только разработчику. Обязательно нужно указывать _constraints files_ (-c ...)
+Use `requirements.local.in` for local dependencies; always specify _constraints files_ (-c ...)
 
-Пример:
+Example:
 ```shell
 # requirements.local.txt
 
@@ -47,21 +47,21 @@ make compile-requirements
 ipython
 ```
 
-### Тесты
-Запуск тестов (всех, кроме функциональных) с экспортом переменных окружения из `.env` файла:
+### Tests
+Run unit tests (export environment variables from `.env` file):
 ```shell
 export $(echo $(cat .env | sed 's/#.*//g'| xargs) | envsubst) && make test
 ```
 
 ### Code style:
-Перед коммитом проверяем, что код соответствует всем требованиям:
+Before pushing a commit run all linters:
 
 ```shell
 make lint
 ```
 
 ### pre-commit:
-Для настройки pre-commit:
+pre-commit installation:
 ```shell
 pre-commit install
 ```

@@ -12,7 +12,7 @@ from netflix.movies.client.warnings import InvalidPageSizeWarning
 
 
 class MovieClient:
-    """Клиент для работы с сервисом Netflix Movies."""
+    """Netflix Movies client."""
 
     MAX_PAGE_SIZE: ClassVar[int] = 999
 
@@ -34,12 +34,12 @@ class MovieClient:
         return self._closed
 
     def close(self) -> None:
-        """Закрытие HTTP сессии."""
+        """Close HTTP session."""
         self._session.close()
         self._closed = True
 
     def get_paginated_response_iter(self, url: str, *, fetch_all: bool = True, **kwargs) -> Iterator[dict]:
-        """Получение итератора по пагинированному ответу."""
+        """Get paginated response iterator."""
         page = 0
         params = kwargs.setdefault("params", {})
         page_size = kwargs["params"].get("page[size]") or self.per_page
@@ -59,13 +59,13 @@ class MovieClient:
             page += 1
 
     def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
-        """Получение фильма по id."""
+        """Retrieve film by id."""
         return FilmDetail.parse_obj(self._session.get(f"/films/{film_id}").json())
 
     def search_films_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> Iterator[FilmList]:
-        """Поиск по фильмам. Возвращает итератор."""
+        """Search films using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         for film in self.get_paginated_response_iter("/films/search", fetch_all=fetch_all, params=query_options):
@@ -74,14 +74,14 @@ class MovieClient:
     def search_films(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[FilmList]:
-        """Поиск по фильмам."""
+        """Search films using a given query."""
         query_options = self._get_query_options(options)
         return list(self.search_films_iter(query, fetch_all=fetch_all, options=query_options))
 
     def search_persons_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> Iterator[PersonList]:
-        """Поиск по персонам."""
+        """Search persons using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         for person in self.get_paginated_response_iter("/persons/search", fetch_all=fetch_all, params=query_options):
@@ -90,20 +90,20 @@ class MovieClient:
     def search_persons(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[PersonList]:
-        """Поиск по персонам."""
+        """Search persons using a given query."""
         query_options = self._get_query_options(options)
         return list(self.search_persons_iter(query, fetch_all=fetch_all, options=query_options))
 
     def get_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
-        """Получение общей информации о персоне."""
+        """Get person short details."""
         return PersonShortDetail.parse_obj(self._session.get(f"/persons/{person_id}").json())
 
     def get_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
-        """Получение полной информации о персоне."""
+        """Get person's full details."""
         return PersonFullDetail.parse_obj(self._session.get(f"/persons/full/{person_id}").json())
 
     def get_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
-        """Получение списка фильмов персоны по id."""
+        """Get person's films."""
         return parse_obj_as(list[FilmList], self._session.get(f"/persons/{person_id}/films").json())
 
     @staticmethod
@@ -114,7 +114,7 @@ class MovieClient:
 
 
 def init_movie_client(session: MovieSession) -> Iterator[MovieClient]:
-    """Инициализация клиента Netflix Movies."""
+    """Setup Netflix Movies client."""
     movie_client = MovieClient(session=session)
     yield movie_client
     movie_client.close()

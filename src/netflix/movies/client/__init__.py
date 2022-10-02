@@ -1,6 +1,6 @@
 from .version import __version__
 
-# XXX: Для сборки пакета setuptools'ами
+# XXX: For building package with setuptools
 try:
     from .asyncio import AsyncMovieClient, AsyncMovieSession, init_async_movie_client
     from .clients import MovieClient, init_movie_client

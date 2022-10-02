@@ -18,14 +18,14 @@ dataclass_options = {
 
 @dataclass(**dataclass_options)
 class SortOptions:
-    """Параметры сортировки."""
+    """Sort options."""
 
     sort: list[str] = field(default_factory=list)
 
 
 @dataclass(**dataclass_options)
 class PageNumberPaginationOptions:
-    """Параметры пагинации типа `page number`."""
+    """`Page number` pagination options."""
 
     page_number: int = DEFAULT_PAGE_NUMBER
     page_size: int = DEFAULT_PAGE_SIZE
@@ -33,7 +33,7 @@ class PageNumberPaginationOptions:
 
 @dataclass(**dataclass_options)
 class QueryOptions:
-    """Параметры для запроса в сервис."""
+    """Query options."""
 
     sort: SortOptions = field(default_factory=SortOptions)
     page_number_pagination: PageNumberPaginationOptions = field(default_factory=PageNumberPaginationOptions)

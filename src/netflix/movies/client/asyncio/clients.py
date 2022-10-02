@@ -12,7 +12,7 @@ from netflix.movies.client.warnings import InvalidPageSizeWarning
 
 
 class AsyncMovieClient:
-    """Асинхронный клиент для работы с сервисом Netflix Movies."""
+    """Netflix Movies async client."""
 
     MAX_PAGE_SIZE: ClassVar[int] = 999
 
@@ -34,11 +34,12 @@ class AsyncMovieClient:
         return self._closed
 
     async def close(self) -> None:
+        """Close HTTP session."""
         await self._session.close()
         self._closed = True
 
     async def get_paginated_response_iter(self, url: str, *, fetch_all: bool = True, **kwargs) -> AsyncIterator[dict]:
-        """Получение итератора по пагинированному ответу."""
+        """Get paginated response iterator."""
         page = 0
         params = kwargs.setdefault("params", {})
         page_size = kwargs["params"].get("page[size]") or self.per_page
@@ -60,14 +61,14 @@ class AsyncMovieClient:
                 page += 1
 
     async def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
-        """Получение фильма по id."""
+        """Retrieve film by id."""
         async with self._session.get(f"/films/{film_id}") as raw_response:
             return FilmDetail.parse_obj(await raw_response.json())
 
     async def search_films_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> AsyncIterator[FilmList]:
-        """Поиск по фильмам. Возвращает итератор."""
+        """Search films using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         async for film in self.get_paginated_response_iter("/films/search", fetch_all=fetch_all, params=query_options):
@@ -76,14 +77,14 @@ class AsyncMovieClient:
     async def search_films(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[FilmList]:
-        """Поиск по фильмам."""
+        """Search films using a given query."""
         query_options = self._get_query_options(options)
         return [film async for film in self.search_films_iter(query, fetch_all=fetch_all, options=query_options)]
 
     async def search_persons_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> AsyncIterator[PersonList]:
-        """Поиск по персонам."""
+        """Search persons using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         results = self.get_paginated_response_iter("/persons/search", fetch_all=fetch_all, params=query_options)
@@ -93,22 +94,22 @@ class AsyncMovieClient:
     async def search_persons(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[PersonList]:
-        """Поиск по персонам."""
+        """Search persons using a given query."""
         query_options = self._get_query_options(options)
         return [person async for person in self.search_persons_iter(query, fetch_all=fetch_all, options=query_options)]
 
     async def get_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
-        """Получение общей информации о персоне."""
+        """Get person short details."""
         async with self._session.get(f"/persons/{person_id}") as raw_response:
             return PersonShortDetail.parse_obj(await raw_response.json())
 
     async def get_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
-        """Получение полной информации о персоне."""
+        """Get person's full details."""
         async with self._session.get(f"/persons/full/{person_id}") as raw_response:
             return PersonFullDetail.parse_obj(await raw_response.json())
 
     async def get_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
-        """Получение списка фильмов персоны по id."""
+        """Get person's films."""
         async with self._session.get(f"/persons/{person_id}/films") as raw_response:
             return parse_obj_as(list[FilmList], await raw_response.json())
 
@@ -120,7 +121,7 @@ class AsyncMovieClient:
 
 
 async def init_async_movie_client(session: AsyncMovieSession) -> AsyncIterator[AsyncMovieClient]:
-    """Инициализация асинхронного клиента Netflix Movies."""
+    """Setup Netflix Movies async client."""
     movie_client = AsyncMovieClient(session=session)
     yield movie_client
     await movie_client.close()

@@ -16,7 +16,7 @@ def orjson_dumps(value, *, default):
 
 
 class BaseOrjsonSchema(BaseModel):
-    """Базовая модель Pydantic с использованием orjson."""
+    """Base Pydantic `orjson` schema."""
 
     class Config:
         json_loads = orjson.loads
@@ -24,6 +24,6 @@ class BaseOrjsonSchema(BaseModel):
 
 
 class BaseIdOrjsonSchema(BaseOrjsonSchema):
-    """Базовая схема с uuid."""
+    """Base schema with uuid."""
 
     uuid: uuid.UUID

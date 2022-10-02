@@ -11,18 +11,18 @@ log = logging.getLogger(__name__)
 
 
 class NetflixMoviesBaseError(Exception):
-    """Базовая ошибка от сервиса Netflix Movies."""
+    """Base Netflix Movies error."""
 
 
 class NetflixMoviesError(NetflixMoviesBaseError):
-    """Ошибка от сервиса Netflix Movies."""
+    """Netflix Movies error."""
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self}>"
 
 
 class MaxAttemptsError(NetflixMoviesError):
-    """Превышен лимит повторных запросов к АПИ."""
+    """Max attempts limit exceeded."""
 
     errors: tuple[Exception]
     attempts: int
@@ -91,13 +91,13 @@ class _HTTPError(NetflixMoviesError):
 
 
 class HTTPError(_HTTPError):
-    """HTTP ошибка сервиса Netflix Movies."""
+    """Netflix Movies HTTP error."""
 
     _error_code_subclass_map: ClassVar[dict[str: Type["HTTPError"]]] = {}
 
     def __new__(cls, response: requests.Response) -> HTTPError:
         if cls is not HTTPError:
-            # Явно используется подкласс HTTPError -> не используем кастомный конструктор с диспатчером.
+            # The HTTPError subclass is explicitly used -> do not use custom dispatcher.
             return _HTTPError.__new__(cls, response)
         status_code = response.status_code
         actual_class = cls._error_code_subclass_map.get(cls._get_error_code_from_response(response))
@@ -135,20 +135,20 @@ class HTTPError(_HTTPError):
 
 
 class ServerError(HTTPError):
-    """Ошибка сервера Netflix Movies."""
+    """Netflix Movies server error."""
 
 
 class ClientError(HTTPError):
-    """Ошибка при запросе."""
+    """Netflix Movies client error."""
 
 
 class NotFoundError(ClientError):
-    """Ресурс не найден."""
+    """Resource is not found."""
 
     code = "not_found"
 
 
 class AuthorizationError(ClientError):
-    """Ошибка при авторизации."""
+    """Authorization error."""
 
     code = "authorization_error"

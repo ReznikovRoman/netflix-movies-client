@@ -7,9 +7,9 @@ from netflix.movies.client.types.persons import PersonList
 
 
 class FilmAgeRating(str, Enum):
-    """Возрастной рейтинг фильма.
+    """Film's age rating.
 
-    Список возрастных рейтингов: https://bit.ly/3xuSpB0.
+    List of possible age ratings: https://bit.ly/3xuSpB0.
     """
 
     GENERAL = "G"
@@ -20,14 +20,14 @@ class FilmAgeRating(str, Enum):
 
 
 class FilmAccessType(str, Enum):
-    """Доступность фильма для просмотра."""
+    """Film access type."""
 
     PUBLIC = "public"
     SUBSCRIPTION = "subscription"
 
 
 class FilmDetail(BaseIdOrjsonSchema):
-    """Фильм."""
+    """Film."""
 
     title: str
     imdb_rating: float | None
@@ -42,7 +42,7 @@ class FilmDetail(BaseIdOrjsonSchema):
 
 
 class FilmList(BaseIdOrjsonSchema):
-    """Список фильмов."""
+    """List of films."""
 
     title: str
     imdb_rating: float | None

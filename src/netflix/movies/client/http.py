@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 def _exc_msg(exc: Exception) -> str:
-    """Сообщение ошибки."""
+    """Exception message."""
     if (package := exc.__class__.__module__) == "__main__":
         package = __package__
     fullname = f"{package}.{exc.__class__.__qualname__}"
@@ -23,7 +23,7 @@ def _exc_msg(exc: Exception) -> str:
 
 
 class MovieSession(requests.Session):
-    """HTTP сессия для работы с API Netflix Movies."""
+    """HTTP session for working with Netflix Movies API."""
 
     base_api_path: str = "/api/v1"
 

@@ -9,7 +9,7 @@ from netflix.movies.client.types.films import FilmAccessType, FilmAgeRating
 from netflix.movies.client.types.roles import PersonRoleFilmList, Role
 
 PERSON_ID = uuid.UUID("fb6a644b-436a-4131-8fbc-00ca73e9aee7")
-PERSON_NAME = "Леонид Гайдай"
+PERSON_NAME = "Quentin Tarantino"
 
 PERSON_SEARCH_RESULTS = [
     PersonList(uuid=PERSON_ID, full_name=PERSON_NAME),
@@ -17,14 +17,13 @@ PERSON_SEARCH_RESULTS = [
 
 FILM = FilmDetail(
     uuid=uuid.UUID("09445a09-bfb6-4eb1-84e8-c82b4fe80437"),
-    title="Операция 'Ы'",
-    imdb_rating=8.7,
+    title="Pulp fiction",
+    imdb_rating=8.9,
     description=(
-        "Студент Шурик попадает в самые невероятные ситуации: сражается с хулиганом Верзилой, "
-        "весьма оригинальным способом готовится к экзамену и предотвращает «ограбление века», "
-        "на которое идёт троица бандитов — Балбес, Трус и Бывалый."
+        "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits "
+        "intertwine in four tales of violence and redemption."
     ),
-    release_date=datetime.date(1965, 7, 23),
+    release_date=datetime.date(1994, 10, 14),
     age_rating=FilmAgeRating.GENERAL,
     access_type=FilmAccessType.PUBLIC,
     genre=[], actors=[], writers=[], directors=PERSON_SEARCH_RESULTS,
@@ -32,15 +31,13 @@ FILM = FilmDetail(
 
 ANOTHER_FILM = FilmDetail(
     uuid=uuid.UUID("7e64ae94-4be9-4eaf-8f10-917e6ab2088c"),
-    title="Кавказская пленница",
-    imdb_rating=8.5,
+    title="Kill Bill: Vol. 1",
+    imdb_rating=8.2,
     description=(
-        "Отправившись в одну из горных республик собирать фольклор, "
-        "студент Шурик влюбляется в симпатичную девушку Нину - спортсменку, отличницу, комсомолку и просто красавицу. "
-        "Но её внезапно похищают банда их трёх человек, чтобы насильно выдать замуж. Наивный Шурик не сразу сообразил, "
-        "что творится у него под носом, - однако затем отважно ринулся освобождать кавказскую пленницу."
+        "After awakening from a four-year coma, a former assassin wreaks vengeance on the team of "
+        "assassins who betrayed her."
     ),
-    release_date=datetime.date(1967, 4, 1),
+    release_date=datetime.date(2003, 10, 10),
     age_rating=FilmAgeRating.GENERAL,
     access_type=FilmAccessType.PUBLIC,
     genre=[], actors=[], writers=[], directors=PERSON_SEARCH_RESULTS,
@@ -77,7 +74,7 @@ PERSON_FULL_DETAILS = PersonFullDetail(
 
 
 class MovieClientStub(MovieClient):
-    """Стаб клиента для работы с сервисом Netflix Movies."""
+    """Netflix Movies client stub."""
 
     async def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
         return FILM

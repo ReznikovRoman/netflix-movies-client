@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 class AsyncMovieSession(aiohttp.ClientSession):
-    """HTTP сессия для асинхронной работы с API Netflix Movies."""
+    """Async HTTP session for working with Netflix Movies API."""
 
     base_api_path: str = "/api/v1"
 

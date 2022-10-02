@@ -12,14 +12,14 @@ log = logging.getLogger(__name__)
 
 
 class AsyncNetflixMoviesError(NetflixMoviesBaseError):
-    """Ошибка от сервиса Netflix Movies."""
+    """Netflix Movies error."""
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self}>"
 
 
 class AsyncMaxAttemptsError(AsyncNetflixMoviesError):
-    """Превышен лимит повторных запросов к АПИ."""
+    """Max attempts limit exceeded."""
 
     errors: tuple[Exception]
     attempts: int
@@ -78,7 +78,7 @@ class _AsyncHTTPError(AsyncNetflixMoviesError):
 
 
 class AsyncHTTPError(_AsyncHTTPError):
-    """HTTP ошибка сервиса Netflix Movies."""
+    """Netflix Movies HTTP error."""
 
     _error_code_subclass_map: ClassVar[dict[str: Type["AsyncHTTPError"]]] = {}
 
@@ -86,7 +86,7 @@ class AsyncHTTPError(_AsyncHTTPError):
         cls, response: aiohttp.ClientResponse, error_code: HTTPStatus, error_dict: dict | None = None,
     ) -> AsyncHTTPError:
         if cls is not AsyncHTTPError:
-            # Явно используется подкласс HTTPAsyncError -> не используем кастомный конструктор с диспатчером.
+            # The HTTPError subclass is explicitly used -> do not use custom dispatcher.
             return _AsyncHTTPError.__new__(cls, response, error_code, error_dict)
         status_code = response.status
         actual_class = cls._error_code_subclass_map.get(cls._get_error_code_from_response(error_dict))
@@ -128,20 +128,20 @@ class AsyncHTTPError(_AsyncHTTPError):
 
 
 class AsyncServerError(AsyncHTTPError):
-    """Ошибка сервера Netflix Movies."""
+    """Netflix Movies server error."""
 
 
 class AsyncClientError(AsyncHTTPError):
-    """Ошибка при запросе."""
+    """Netflix Movies client error."""
 
 
 class AsyncNotFoundError(AsyncClientError):
-    """Ресурс не найден."""
+    """Resource is not found."""
 
     code = "not_found"
 
 
 class AsyncAuthorizationError(AsyncClientError):
-    """Ошибка при авторизации."""
+    """Authorization error."""
 
     code = "authorization_error"

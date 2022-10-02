@@ -2,7 +2,7 @@ import warnings
 
 
 class WarnMethodMixin:
-    """Миксин для создания кастомных предупреждений."""
+    """Mixin for creating custom warnings."""
 
     @classmethod
     def warn(cls, message: str, stacklevel: int = 2, *, prefix: str | None = None):
@@ -12,4 +12,4 @@ class WarnMethodMixin:
 
 
 class InvalidPageSizeWarning(WarnMethodMixin, UserWarning):
-    """Предупреждение о неверном параметре пагинации."""
+    """Invalid pagination parameter warning."""

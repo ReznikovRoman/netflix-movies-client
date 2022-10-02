@@ -5,7 +5,7 @@ from netflix.movies.client.types.films import FilmList
 
 
 class Role(str, Enum):
-    """Роль персоны."""
+    """Person's role."""
 
     ACTOR = "actor"
     WRITER = "writer"
@@ -13,14 +13,14 @@ class Role(str, Enum):
 
 
 class PersonRoleFilmList(BaseOrjsonSchema):
-    """Роль персоны со списком фильмов."""
+    """Person's role with corresponding films."""
 
     role: Role
     films: list[FilmList]
 
 
 class PersonFullDetail(BaseIdOrjsonSchema):
-    """Персона (с разбиением фильмов по ролям)."""
+    """Person (with roles and films)."""
 
     full_name: str
     roles: list[PersonRoleFilmList]
