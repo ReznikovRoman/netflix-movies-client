@@ -76,24 +76,24 @@ PERSON_FULL_DETAILS = PersonFullDetail(
 class MovieClientStub(MovieClient):
     """Netflix Movies client stub."""
 
-    async def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
+    async def fetch_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
         return FILM
 
-    async def search_films(
+    async def find_films(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[FilmList]:
         return FILM_SEARCH_RESULTS
 
-    async def search_persons(
+    async def find_persons(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[PersonList]:
         return PERSON_SEARCH_RESULTS
 
-    async def get_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
+    async def fetch_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
         return PERSON_SHORT_DETAILS
 
-    async def get_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
+    async def fetch_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
         return PERSON_FULL_DETAILS
 
-    async def get_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
+    async def fetch_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
         return FILM_SEARCH_RESULTS

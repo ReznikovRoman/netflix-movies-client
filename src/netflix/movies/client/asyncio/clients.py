@@ -60,56 +60,56 @@ class AsyncMovieClient:
                     yield result
                 page += 1
 
-    async def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
-        """Retrieve film by id."""
+    async def fetch_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
+        """Fetch film by id."""
         async with self._session.get(f"/films/{film_id}") as raw_response:
             return FilmDetail.parse_obj(await raw_response.json())
 
-    async def search_films_iter(
+    async def find_films_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> AsyncIterator[FilmList]:
-        """Search films using a given query. Returns an iterator."""
+        """Find films using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         async for film in self.get_paginated_response_iter("/films/search", fetch_all=fetch_all, params=query_options):
             yield FilmList.parse_obj(film)
 
-    async def search_films(
+    async def find_films(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[FilmList]:
-        """Search films using a given query."""
+        """Find films using a given query."""
         query_options = self._get_query_options(options)
-        return [film async for film in self.search_films_iter(query, fetch_all=fetch_all, options=query_options)]
+        return [film async for film in self.find_films_iter(query, fetch_all=fetch_all, options=query_options)]
 
-    async def search_persons_iter(
+    async def find_persons_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> AsyncIterator[PersonList]:
-        """Search persons using a given query. Returns an iterator."""
+        """Find persons using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         results = self.get_paginated_response_iter("/persons/search", fetch_all=fetch_all, params=query_options)
         async for film in results:
             yield PersonList.parse_obj(film)
 
-    async def search_persons(
+    async def find_persons(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[PersonList]:
-        """Search persons using a given query."""
+        """Find persons using a given query."""
         query_options = self._get_query_options(options)
-        return [person async for person in self.search_persons_iter(query, fetch_all=fetch_all, options=query_options)]
+        return [person async for person in self.find_persons_iter(query, fetch_all=fetch_all, options=query_options)]
 
-    async def get_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
-        """Get person short details."""
+    async def fetch_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
+        """Fetch person short details."""
         async with self._session.get(f"/persons/{person_id}") as raw_response:
             return PersonShortDetail.parse_obj(await raw_response.json())
 
-    async def get_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
-        """Get person's full details."""
+    async def fetch_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
+        """Fetch person's full details."""
         async with self._session.get(f"/persons/full/{person_id}") as raw_response:
             return PersonFullDetail.parse_obj(await raw_response.json())
 
-    async def get_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
-        """Get person's films."""
+    async def fetch_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
+        """Fetch person's films."""
         async with self._session.get(f"/persons/{person_id}/films") as raw_response:
             return parse_obj_as(list[FilmList], await raw_response.json())
 

@@ -8,7 +8,7 @@ import aiohttp
 from aiohttp import ContentTypeError
 
 from netflix.movies.client.asyncio import exceptions
-from netflix.movies.client.http import _exc_msg
+from netflix.movies.client.http import _exception_message
 from netflix.movies.client.version import __version__
 
 if TYPE_CHECKING:
@@ -84,7 +84,7 @@ class AsyncMovieSession(aiohttp.ClientSession):
             try:
                 return await func(*args, **kwargs)
             except (OSError, exceptions.AsyncServerError) as exc:
-                self.log.warning(f"attempt {error_attempt} failed: {_exc_msg(exc)}")
+                self.log.warning(f"attempt {error_attempt} failed: {_exception_message(exc)}")
                 _exc = exc
                 error_attempt += 1
                 errors.append(exc)

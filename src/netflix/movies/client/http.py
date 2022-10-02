@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from netflix.movies.client.types import TimeoutTupleType, TimeoutType
 
 
-def _exc_msg(exc: Exception) -> str:
+def _exception_message(exc: Exception) -> str:
     """Exception message."""
     if (package := exc.__class__.__module__) == "__main__":
         package = __package__
@@ -86,7 +86,7 @@ class MovieSession(requests.Session):
             try:
                 return func(*args, **kwargs)
             except (OSError, exceptions.ServerError) as exc:
-                self.log.warning(f"attempt {error_attempt} failed: {_exc_msg(exc)}")
+                self.log.warning(f"attempt {error_attempt} failed: {_exception_message(exc)}")
                 _exc = exc
                 error_attempt += 1
                 errors.append(exc)

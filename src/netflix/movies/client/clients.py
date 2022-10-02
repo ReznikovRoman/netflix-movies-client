@@ -58,52 +58,52 @@ class MovieClient:
             yield from response
             page += 1
 
-    def get_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
-        """Retrieve film by id."""
+    def fetch_film_by_id(self, film_id: uuid.UUID, /) -> FilmDetail:
+        """Fetch film by id."""
         return FilmDetail.parse_obj(self._session.get(f"/films/{film_id}").json())
 
-    def search_films_iter(
+    def find_films_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> Iterator[FilmList]:
-        """Search films using a given query. Returns an iterator."""
+        """Find films using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         for film in self.get_paginated_response_iter("/films/search", fetch_all=fetch_all, params=query_options):
             yield FilmList.parse_obj(film)
 
-    def search_films(
+    def find_films(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[FilmList]:
-        """Search films using a given query."""
+        """Find films using a given query."""
         query_options = self._get_query_options(options)
-        return list(self.search_films_iter(query, fetch_all=fetch_all, options=query_options))
+        return list(self.find_films_iter(query, fetch_all=fetch_all, options=query_options))
 
-    def search_persons_iter(
+    def find_persons_iter(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> Iterator[PersonList]:
-        """Search persons using a given query. Returns an iterator."""
+        """Find persons using a given query. Returns an iterator."""
         query_options = self._get_query_options(options).to_dict()
         query_options["query"] = query
         for person in self.get_paginated_response_iter("/persons/search", fetch_all=fetch_all, params=query_options):
             yield PersonList.parse_obj(person)
 
-    def search_persons(
+    def find_persons(
         self, query: str, /, *, fetch_all: bool = True, options: QueryOptions | None = None,
     ) -> list[PersonList]:
-        """Search persons using a given query."""
+        """Find persons using a given query."""
         query_options = self._get_query_options(options)
-        return list(self.search_persons_iter(query, fetch_all=fetch_all, options=query_options))
+        return list(self.find_persons_iter(query, fetch_all=fetch_all, options=query_options))
 
-    def get_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
-        """Get person short details."""
+    def fetch_person_short_details(self, person_id: uuid.UUID, /) -> PersonShortDetail:
+        """Fetch person's short details."""
         return PersonShortDetail.parse_obj(self._session.get(f"/persons/{person_id}").json())
 
-    def get_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
-        """Get person's full details."""
+    def fetch_person_full_details(self, person_id: uuid.UUID, /) -> PersonFullDetail:
+        """Fetch person's full details."""
         return PersonFullDetail.parse_obj(self._session.get(f"/persons/full/{person_id}").json())
 
-    def get_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
-        """Get person's films."""
+    def fetch_person_films(self, person_id: uuid.UUID, /) -> list[FilmList]:
+        """Fetch person's films."""
         return parse_obj_as(list[FilmList], self._session.get(f"/persons/{person_id}/films").json())
 
     @staticmethod
