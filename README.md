@@ -1,6 +1,9 @@
 # Netflix Movies Client
 Netflix Movies python API client.
 
+## Stack
+[requests](https://requests.readthedocs.io/en/latest/), [aiohttp](https://docs.aiohttp.org/en/stable/)
+
 ## Services
 - Netflix Admin:
   - Online-cinema management panel. Admins can manage films, genres, actors/directors/writers/...
